@@ -6,20 +6,30 @@ import (
 	"net/url"
 )
 
-type Client struct {
+type Client interface {
+	Get(url url.URL) (*http.Response, error)
+
+	ApiV1
+}
+
+type ApiV1 interface {
+	GetEmotes(in ApiV1EmotesRequest) (*ApiV1EmotesResponse, error)
+}
+
+type client struct {
 	ctx context.Context
 
 	client http.Client
 }
 
-func NewClient(ctx context.Context) *Client {
-	return &Client{
+func NewClient(ctx context.Context) Client {
+	return &client{
 		ctx:    ctx,
 		client: http.Client{},
 	}
 }
 
-func (c *Client) Get(url url.URL) (*http.Response, error) {
+func (c *client) Get(url url.URL) (*http.Response, error) {
 	req, err := http.NewRequest("GET", url.String(), nil)
 	if err != nil {
 		return nil, err

@@ -9,22 +9,42 @@ import (
 )
 
 type ApiV1EmotesRequest struct {
-	Query     string `json:"q,omitempty"`
-	Owner     string `json:"owner,omitempty"`
-	Artist    string `json:"artist,omitempty"`
-	Sensitive bool   `json:"sensitive,omitempty"`
-	Sort      string `json:"sort,omitempty"`
-	Page      int    `json:"page,omitempty"`
-	PerPage   int    `json:"per_page,omitempty"`
+	// Query A string to search by
+	Query string `json:"q,omitempty"`
+
+	// Owner A string to search users by
+	Owner string `json:"owner,omitempty"`
+
+	// Artist A string to search users by
+	Artist string `json:"artist,omitempty"`
+
+	// Sensitive Whether the search query should be treated as case-sensitive.
+	Sensitive bool `json:"sensitive,omitempty"`
+
+	// Sort The column and direction to sort by.
+	// Possible values: name-asd, name-desc, owner-asc, owner-desc,
+	// count-asc, count-desc, updated-asc, updated-desc, created-asc, created-desc
+	Sort string `json:"sort,omitempty"`
+
+	Page int `json:"page,omitempty"`
+
+	// PerPage Number of emotes per page. Range: 1-200
+	PerPage int `json:"per_page,omitempty"`
 }
 
 type ApiV1EmotesResponse struct {
-	Pages     int64      `json:"_pages"`
-	Total     int64      `json:"_total"`
+	// Pages total count of pages
+	Pages int64 `json:"_pages"`
+
+	// Total count of emotes
+	Total int64 `json:"_total"`
+
+	// Emoticons founded emotes
 	Emoticons []Emoticon `json:"emoticons"`
 }
 
-func (c Client) GetEmotes(in ApiV1EmotesRequest) (*ApiV1EmotesResponse, error) {
+// GetEmotes implements /v1/emotes handler, that get emotes in bulk
+func (c *client) GetEmotes(in ApiV1EmotesRequest) (*ApiV1EmotesResponse, error) {
 	u, err := url.Parse("https://api.frankerfacez.com/v1/emotes")
 	if err != nil {
 		return nil, err
@@ -55,7 +75,9 @@ func (c Client) GetEmotes(in ApiV1EmotesRequest) (*ApiV1EmotesResponse, error) {
 	return &response, nil
 }
 
-func (c Client) GetEmotesByName(name string) (*ApiV1EmotesResponse, error) {
+// GetEmotesByName implements /v1/emotes handler, that select emotes by name
+// order by usage_count and get one emote
+func (c *client) GetEmotesByName(name string) (*ApiV1EmotesResponse, error) {
 	u, err := url.Parse("https://api.frankerfacez.com/v1/emotes")
 	if err != nil {
 		return nil, err
