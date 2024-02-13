@@ -35,10 +35,26 @@ func (c *client) Get(url url.URL) (*http.Response, error) {
 		return nil, err
 	}
 
-	res, err := c.client.Do(req)
-	if err != nil {
-		return nil, err
-	}
+	errChan := make(chan error, 1)
+	resChan := make(chan *http.Response, 1)
 
-	return res, nil
+	go func() {
+		res, err := c.client.Do(req)
+		if err != nil {
+			errChan <- err
+		}
+
+		resChan <- res
+	}()
+
+	for {
+		select {
+		case err := <-errChan:
+			return nil, err
+		case res := <-resChan:
+			return res, nil
+		case <-c.ctx.Done():
+			return nil, c.ctx.Err()
+		}
+	}
 }

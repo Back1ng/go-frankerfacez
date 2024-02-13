@@ -8,6 +8,20 @@ import (
 	"net/url"
 )
 
+// Sorting constants using in requests
+const (
+	SORT_NAME_ASC     = "name-asc"
+	SORT_NAME_DESC    = "name-desc"
+	SORT_OWNER_ASC    = "owner-asc"
+	SORT_OWNER_DESC   = "owner_desc"
+	SORT_COUNT_ASC    = "count_asc"
+	SORT_COUNT_DESC   = "count-desc"
+	SORT_UPDATED_ASC  = "updated-asc"
+	SORT_UPDATED_DESC = "updated-desc"
+	SORT_CREATED_ASC  = "created-asc"
+	SORT_CREATED_DESC = "created-desc"
+)
+
 type ApiV1EmotesRequest struct {
 	// Query A string to search by
 	Query string `json:"q"`
@@ -24,6 +38,7 @@ type ApiV1EmotesRequest struct {
 	// Sort The column and direction to sort by.
 	// Possible values: name-asd, name-desc, owner-asc, owner-desc,
 	// count-asc, count-desc, updated-asc, updated-desc, created-asc, created-desc
+	// Can be used from const SORT_...
 	Sort string `json:"sort,omitempty"`
 
 	Animated bool `json:"animated,omitempty"`
