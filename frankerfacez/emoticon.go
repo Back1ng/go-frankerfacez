@@ -41,6 +41,9 @@ type Emoticon struct {
 	// references (see RFC 3986 for details) but now all URLs are absolute. Sorry for the inconvenience this has caused.
 	Urls map[string]string `json:"urls"`
 
+	// Animated same like in Urls
+	Animated map[string]string `json:"animated"`
+
 	// CreatedAt The datetime when the emote was created
 	CreatedAt time.Time `json:"created_at"`
 

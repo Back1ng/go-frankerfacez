@@ -10,7 +10,7 @@ import (
 
 type ApiV1EmotesRequest struct {
 	// Query A string to search by
-	Query string `json:"q,omitempty"`
+	Query string `json:"q"`
 
 	// Owner A string to search users by
 	Owner string `json:"owner,omitempty"`
@@ -25,6 +25,8 @@ type ApiV1EmotesRequest struct {
 	// Possible values: name-asd, name-desc, owner-asc, owner-desc,
 	// count-asc, count-desc, updated-asc, updated-desc, created-asc, created-desc
 	Sort string `json:"sort,omitempty"`
+
+	Animated bool `json:"animated,omitempty"`
 
 	Page int `json:"page,omitempty"`
 
