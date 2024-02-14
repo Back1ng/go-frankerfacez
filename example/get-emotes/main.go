@@ -10,9 +10,9 @@ import (
 
 func main() {
 	ctx, _ := context.WithTimeout(context.Background(), 5*time.Second)
-	c := frankerfacez.NewClient(ctx)
+	c := frankerfacez.NewClient()
 
-	res, err := c.GetEmotes(frankerfacez.ApiV1EmotesRequest{
+	res, err := c.GetEmotes(ctx, frankerfacez.ApiV1EmotesRequest{
 		Query:    "KEKW",
 		Animated: true,
 		PerPage:  1,

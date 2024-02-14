@@ -1,6 +1,7 @@
 package frankerfacez
 
 import (
+	"context"
 	"encoding/json"
 	"github.com/Back1ng/go-frankerfacez/utils"
 	"io"
@@ -61,7 +62,7 @@ type ApiV1EmotesResponse struct {
 }
 
 // GetEmotes implements /v1/emotes handler, that get emotes in bulk
-func (c *client) GetEmotes(in ApiV1EmotesRequest) (*ApiV1EmotesResponse, error) {
+func (c *client) GetEmotes(ctx context.Context, in ApiV1EmotesRequest) (*ApiV1EmotesResponse, error) {
 	u, err := url.Parse("https://api.frankerfacez.com/v1/emotes")
 	if err != nil {
 		return nil, err
@@ -73,7 +74,7 @@ func (c *client) GetEmotes(in ApiV1EmotesRequest) (*ApiV1EmotesResponse, error) 
 	}
 	u.RawQuery = values.Encode()
 
-	res, err := c.Get(*u)
+	res, err := c.Get(ctx, *u)
 	if err != nil {
 		return nil, err
 	}

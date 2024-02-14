@@ -7,29 +7,26 @@ import (
 )
 
 type Client interface {
-	Get(url url.URL) (*http.Response, error)
+	Get(ctx context.Context, url url.URL) (*http.Response, error)
 
 	ApiV1
 }
 
 type ApiV1 interface {
-	GetEmotes(in ApiV1EmotesRequest) (*ApiV1EmotesResponse, error)
+	GetEmotes(ctx context.Context, in ApiV1EmotesRequest) (*ApiV1EmotesResponse, error)
 }
 
 type client struct {
-	ctx context.Context
-
 	client http.Client
 }
 
-func NewClient(ctx context.Context) Client {
+func NewClient() Client {
 	return &client{
-		ctx:    ctx,
 		client: http.Client{},
 	}
 }
 
-func (c *client) Get(url url.URL) (*http.Response, error) {
+func (c *client) Get(ctx context.Context, url url.URL) (*http.Response, error) {
 	req, err := http.NewRequest("GET", url.String(), nil)
 	if err != nil {
 		return nil, err
@@ -53,8 +50,8 @@ func (c *client) Get(url url.URL) (*http.Response, error) {
 			return nil, err
 		case res := <-resChan:
 			return res, nil
-		case <-c.ctx.Done():
-			return nil, c.ctx.Err()
+		case <-ctx.Done():
+			return nil, ctx.Err()
 		}
 	}
 }
