@@ -13,7 +13,11 @@ type Client interface {
 }
 
 type ApiV1 interface {
+	// GetEmotes Get emote by some parameters
 	GetEmotes(ctx context.Context, in ApiV1EmotesRequest) (*ApiV1EmotesResponse, error)
+
+	// GetRoomByName Get room info and emote set in room
+	GetRoomByName(ctx context.Context, in ApiV1RoomByNameRequest) (*ApiV1RoomByNameResponse, error)
 }
 
 type client struct {
